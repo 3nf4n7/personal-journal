@@ -5,8 +5,8 @@ function CardButton({ children, className }) {
 
 	return (
 		<button className={cl}>
-            { children }
-        </button>
+			{ children }
+		</button>
 	);
 }
 

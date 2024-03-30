@@ -6,42 +6,44 @@ import JournalList from './components/JournalList/JournalList';
 import LeftPanel from './layouts/LeftPanel/LeftPanel';
 import RightPanel from './layouts/RightPanel/RightPanel';
 import JournalAddButton from './components/JournalAddButton/JournalAddButton';
+import JournalForm from './components/JournalForm/JournalForm';
+import { useState } from 'react';
 
 function App() {
-	const data = [
-		{
-			title: 'Подготовка к обновлению курсов',
-			text: 'Горные походы открывают удивитлельные природные ландшафты',
-			date: new Date()
-		},
-		{
-			title: 'Поход в горы',
-			text: 'Думфл, что очень много времени',
-			date: new Date()
-		}
-	];
+	const [data, setData] = useState([]);
+
+	const updateJournalForm = (newData) => {
+		setData([{
+			title: newData.title,
+			text: newData.text,
+			date: new Date(newData.date),
+			id: data.length > 0 ? Math.max(...data.map(i => i.id)) + 1 : 1
+		}, ...data]);
+	};
 
 	return (
 		<div className='app'>
-      <LeftPanel>
-        <Header />
-        <JournalAddButton></JournalAddButton>
-        <JournalList>
-          {data.map((inf, i) => {
-                  return (
-                  <CardButton key={i}>
-                    <JournalItem
-                      title={inf.title}
-                      text={inf.text}
-                      date={inf.date}
-                    ></JournalItem>
-                  </CardButton>);
-                })}
-          </JournalList>
-      </LeftPanel>
-      <RightPanel>
-          
-      </RightPanel>
+			<LeftPanel>
+				<Header />
+				<JournalAddButton></JournalAddButton>
+				<JournalList>
+					{data.length === 0 ? 
+						<p> Записей нет </p>
+						: data.map(inf => {
+							return (
+								<CardButton key={inf.id}>
+									<JournalItem
+										title={inf.title}
+										text={inf.text}
+										date={inf.date}
+									></JournalItem>
+								</CardButton>);
+						})}
+				</JournalList>
+			</LeftPanel>
+			<RightPanel>
+				<JournalForm updateJournalForm={updateJournalForm} />
+			</RightPanel>
 			
       
 		</div>
