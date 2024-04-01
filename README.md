@@ -1,6 +1,7 @@
 # Personal journal
 
 Just a personal journal to write anything on your mind.
+https://personaljournalby3nf4n7.netlify.app/
 
 This is a pet project written on ReactJS without using typeScript.
 
