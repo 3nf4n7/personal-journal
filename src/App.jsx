@@ -30,7 +30,7 @@ function App() {
 			setData([{
 				...newData,
 				date: new Date(newData.date),
-				id: data.length > 0 ? Math.max(...data.map(i => i.id)) + 1 : 1
+				id: data?.length > 0 ? Math.max(...data.map(i => i.id)) + 1 : 1
 			}, ...mapData(data)]);
 		} else {
 			setData([...mapData(data).map(i => {
