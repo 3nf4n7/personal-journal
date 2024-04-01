@@ -1,52 +1,67 @@
 import './App.css';
-import CardButton from './components/CardButton/CardButton';
 import Header from './components/Header/Header';
-import JournalItem from './components/JournalItem/JournalItem';
 import JournalList from './components/JournalList/JournalList';
 import LeftPanel from './layouts/LeftPanel/LeftPanel';
 import RightPanel from './layouts/RightPanel/RightPanel';
 import JournalAddButton from './components/JournalAddButton/JournalAddButton';
 import JournalForm from './components/JournalForm/JournalForm';
+import { useLocalStorage } from './hooks/useLocalStorage.hook';
+import { ListContextProvider } from './context/list.context';
 import { useState } from 'react';
 
+
+function mapData(data) {
+	if (!data) {
+		return [];
+	}
+
+	return data.map(i => ({
+		...i,
+		date: new Date(i.date)
+	}));
+}
+
 function App() {
-	const [data, setData] = useState([]);
+	const [data, setData] = useLocalStorage('data');
+	const [selectedCard, setSelectedCard] = useState(null);
 
 	const updateJournalForm = (newData) => {
-		setData([{
-			title: newData.title,
-			text: newData.text,
-			date: new Date(newData.date),
-			id: data.length > 0 ? Math.max(...data.map(i => i.id)) + 1 : 1
-		}, ...data]);
+		if (!newData.id) {
+			setData([{
+				...newData,
+				date: new Date(newData.date),
+				id: data.length > 0 ? Math.max(...data.map(i => i.id)) + 1 : 1
+			}, ...mapData(data)]);
+		} else {
+			setData([...mapData(data).map(i => {
+				if (i.id === newData.id) {
+					return {
+						...newData
+					};
+				}
+				return i;
+			})]);
+		}
+	};
+
+
+	const deleteCard = () => {
+		setData([...data.filter(card => card.id !== selectedCard.id)]);
 	};
 
 	return (
-		<div className='app'>
-			<LeftPanel>
-				<Header />
-				<JournalAddButton></JournalAddButton>
-				<JournalList>
-					{data.length === 0 ? 
-						<p> Записей нет </p>
-						: data.map(inf => {
-							return (
-								<CardButton key={inf.id}>
-									<JournalItem
-										title={inf.title}
-										text={inf.text}
-										date={inf.date}
-									></JournalItem>
-								</CardButton>);
-						})}
-				</JournalList>
-			</LeftPanel>
-			<RightPanel>
-				<JournalForm updateJournalForm={updateJournalForm} />
-			</RightPanel>
-			
-      
-		</div>
+		<ListContextProvider>
+			<div className='app'>
+				<LeftPanel>
+					<Header />
+					<JournalAddButton clearForm={() => setSelectedCard(null)}></JournalAddButton>
+					<JournalList data={mapData(data)} setSelectedCard={setSelectedCard} />
+				</LeftPanel>
+				<RightPanel>
+					<JournalForm updateJournalForm={updateJournalForm} data={selectedCard} deleteCard={deleteCard} />
+				</RightPanel>
+			</div>
+		</ListContextProvider>
 	);
 }
 

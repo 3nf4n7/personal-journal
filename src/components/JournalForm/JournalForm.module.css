@@ -16,21 +16,11 @@
 	align-items: center;
 }
 
-.input {
-	border: none;
-	background: none;
-	font-size: 14px;
-	font-style: normal;
-	font-weight: 600;
-	line-height: normal;
-	font-family: 'Source Sans 3', sans-serif;
-	border-bottom: 1px solid #323232;
-	width: 100%;
-}
+
 
 .invalid {
-	border: 1px solid red;
-	background: rgb(68, 6, 6);
+	border: 1px solid red !important;
+	background: rgb(68, 6, 6) !important;
 }
 
 .delete {
@@ -47,6 +37,18 @@
 	border-radius: 50%;
 }
 
+.input {
+	border: none;
+	background: none;
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 600;
+	line-height: normal;
+	font-family: 'Source Sans 3', sans-serif;
+	border-bottom: 1px solid #323232;
+	width: 100%;
+}
+
 .input-title {
 	border: none;
 	background: none;
@@ -57,4 +59,19 @@
 	font-family: 'Source Sans 3', sans-serif;
 	border-bottom: 1px solid #323232;
 	width: 100%;
+}
+
+.delete {
+	border: none;
+	background: none;
+	cursor: pointer;
+	padding: 0;
+	height: 30px;
+	width: 30px;
+	margin-left: 10px;
+}
+
+.delete:hover {
+	background: rgba(255,255,255, 0.05);
+	border-radius: 50%;
 }
