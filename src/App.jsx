@@ -47,6 +47,7 @@ function App() {
 
 	const deleteCard = () => {
 		setData([...data.filter(card => card.id !== selectedCard.id)]);
+		setSelectedCard(null);
 	};
 
 	return (
